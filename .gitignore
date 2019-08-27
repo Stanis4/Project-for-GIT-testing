@@ -1,0 +1,8 @@
+target/
+lib/
+bin/
+.idea/
+out
+*.log
+*.class
+*.iml
