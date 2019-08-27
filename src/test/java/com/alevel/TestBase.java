@@ -1,8 +1,10 @@
 package com.alevel;
 
+import com.alevel.config.EnvConfig;
 import com.alevel.helper.VerificationHelper;
+import com.alevel.web.ui.driver.WebDriverFactory;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -11,18 +13,28 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class TestBase {
 
+    private static final Logger LOGGER = Logger.getLogger(TestBase.class);
+
+    /*
+        LOGGER.fatal(); - всё сломано
+        LOGGER.info(); - всё ок
+        LOGGER.error(); - где-то вылез эксепшен
+        LOGGER.debug(); - больше информации, когда у вас особенно закрученый
+        LOGGER.trace(); - очень подкапотно, не используем
+     */
+
     protected WebDriver driver;
     protected VerificationHelper helper;
+    protected EnvConfig config;
 
     //перед всеми тестовыми методами
     @BeforeTest
     public void setUp() {
-        String path = System.getProperty("user.dir") + "/src/main/resources/drivers/chromedriver.exe";
-        System.setProperty("webdriver.chrome.driver", path);
+        config = new EnvConfig(System.getProperty("environment", "prod"));
 
-        driver = new ChromeDriver();
-        driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
-        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        driver = WebDriverFactory.getDriver(System.getProperty("browser", "chrome"));
+        driver.manage().timeouts().pageLoadTimeout(config.getTimeoutPageload(), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(config.getTimeoutElemWait(), TimeUnit.SECONDS);
 
         helper = new VerificationHelper();
     }
@@ -30,7 +42,8 @@ public abstract class TestBase {
     //Выполняется перед каждым методом помеченным аннотацией @Test
     @BeforeMethod
     public void openPage(){
-        driver.get("https://dou.ua/");
+        LOGGER.info("Opened page with url " + config.getWebUrl());
+        driver.get(config.getWebUrl());
     }
 
     @AfterTest
