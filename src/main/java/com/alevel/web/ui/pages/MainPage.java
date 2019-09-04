@@ -1,5 +1,6 @@
 package com.alevel.web.ui.pages;
 
+import io.qameta.allure.Step;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -20,12 +21,14 @@ public class MainPage extends BasePage {
     @FindBy(xpath = "//input[@name='q']")
     private WebElement searchInput;
 
+    @Step("Enter text to search input {text}")
     public MainPage inputSearchText(String text) {
         LOGGER.info("Text entered to search input '" + text + "'");
         searchInput.sendKeys(text);
         return this;
     }
 
+    @Step("Start search")
     public SearchResultsPage startSearch() {
         searchInput.sendKeys(Keys.ENTER);
         return new SearchResultsPage(driver);

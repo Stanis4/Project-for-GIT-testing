@@ -1,5 +1,6 @@
 package com.alevel.web.ui.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,6 +18,7 @@ public class SearchResultsPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
+    @Step("Getting search results")
     public List<WebElement> getSearchResults() {
         return searchResults;
     }

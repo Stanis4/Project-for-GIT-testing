@@ -18,7 +18,7 @@ public class SearchTests extends TestBase {
                         .getSearchResults();
 
         for (WebElement result : searchResults) {
-            Assert.assertTrue(helper.containsIgnoreCase(result.getText(), searchText));
+            Assert.assertTrue(helper.containsIgnoreCase(result.getText(), searchText + "123"));
         }
     }
 }
