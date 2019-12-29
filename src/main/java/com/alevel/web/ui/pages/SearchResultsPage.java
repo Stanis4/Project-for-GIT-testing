@@ -18,7 +18,7 @@ public class SearchResultsPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    @Step("Getting search results")
+    @Step("Getting search resultsssssssssss")
     public List<WebElement> getSearchResults() {
         return searchResults;
     }
